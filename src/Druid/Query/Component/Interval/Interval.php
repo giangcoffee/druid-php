@@ -83,6 +83,12 @@ class Interval implements IntervalInterface
         return $this->end->format($this->getIntervalFormat());
     }
 
+    public function getInterval()
+    {
+        return $this->getStart().'/'.$this->getEnd();
+    }
+
+
     public function __toString()
     {
         return $this->getStart().'/'.$this->getEnd();

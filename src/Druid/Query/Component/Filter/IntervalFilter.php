@@ -27,21 +27,63 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Druid\Query\Component;
+namespace Druid\Query\Component\Filter;
+
+use Druid\Query\Component\AbstractTypedComponent;
+use Druid\Query\Component\FilterInterface;
+use Druid\Query\Component\IntervalInterface;
 
 /**
- * Interface FilterInterface.
+ * Class IntervalFilter.
  */
-interface FilterInterface extends TypedInterface, ComponentInterface
+class IntervalFilter extends AbstractTypedComponent implements FilterInterface
 {
-    const TYPE_SELECTOR = 'selector';
-    const TYPE_LOGICAL_AND = 'and';
-    const TYPE_LOGICAL_OR = 'or';
-    const TYPE_LOGICAL_NOT = 'not';
-    const TYPE_LOGICAL_IN = 'in';
-    const TYPE_BOUND = 'bound';
-    const TYPE_SEARCH = 'search';
-    const TYPE_LIKE = 'like';
-    const TYPE_REGEX = 'regex';
-    const TYPE_INTERVAL = 'interval';
+    /** @var string */
+    private $dimension;
+
+    /** @var IntervalInterface[] */
+    private $intervals;
+
+    /** @var mixed */
+    private $extractionFn;
+
+    /**
+     * IntervalFilter constructor.
+     *
+     * @param string $dimension
+     * @param $intervals
+     * @param $extractionFn
+     */
+    public function __construct($dimension, $intervals = [], $extractionFn = null)
+    {
+        parent::__construct(FilterInterface::TYPE_BOUND);
+
+        $this->dimension = $dimension;
+        $this->intervals = $intervals;
+        $this->extractionFn = $extractionFn;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDimension()
+    {
+        return $this->dimension;
+    }
+
+    /**
+     * @return \Druid\Query\Component\IntervalInterface[]
+     */
+    public function getIntervals()
+    {
+        return $this->intervals;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExtractionFn()
+    {
+        return $this->extractionFn;
+    }
 }

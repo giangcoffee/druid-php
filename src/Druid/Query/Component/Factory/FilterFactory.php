@@ -29,8 +29,13 @@
 
 namespace Druid\Query\Component\Factory;
 
+use Druid\Query\Component\Filter\BoundFilter;
+use Druid\Query\Component\Filter\InFilter;
+use Druid\Query\Component\Filter\IntervalFilter;
 use Druid\Query\Component\Filter\LogicalFilter;
 use Druid\Query\Component\Filter\NotFilter;
+use Druid\Query\Component\Filter\RegexFilter;
+use Druid\Query\Component\Filter\SearchFilter;
 use Druid\Query\Component\Filter\SelectorFilter;
 use Druid\Query\Component\FilterInterface;
 
@@ -40,54 +45,95 @@ use Druid\Query\Component\FilterInterface;
 class FilterFactory
 {
     /**
-     * @param string $dimension
-     * @param string $value
-     *
+     * @param $dimension
+     * @param $value
      * @return SelectorFilter
      */
-    public function selectorFilter($dimension, $value)
+    public static function createSelectorFilter($dimension, $value)
     {
         return new SelectorFilter($dimension, $value);
     }
 
     /**
-     * @param array|FilterInterface[] $fields
-     *
+     * @param array $fields
      * @return LogicalFilter
      */
-    public function andFilter(array $fields)
+    public static function createAndFilter(array $fields)
     {
-        return $this->logicalFilter(FilterInterface::TYPE_LOGICAL_AND, $fields);
+        return new LogicalFilter(FilterInterface::TYPE_LOGICAL_AND, $fields);
     }
 
     /**
      * @param array|FilterInterface $fields
-     *
      * @return LogicalFilter
      */
-    public function orFilter(array $fields)
+    public static function createOrFilter(array $fields)
     {
-        return $this->logicalFilter(FilterInterface::TYPE_LOGICAL_OR, $fields);
-    }
-
-    /**
-     * @param string $type
-     * @param array  $fields
-     *
-     * @return LogicalFilter
-     */
-    public function logicalFilter($type, array $fields)
-    {
-        return new LogicalFilter($type, $fields);
+        return new LogicalFilter(FilterInterface::TYPE_LOGICAL_OR, $fields);
     }
 
     /**
      * @param FilterInterface $field
-     *
      * @return NotFilter
      */
-    public function notFilter(FilterInterface $field)
+    public static function createNotFilter(FilterInterface $field)
     {
         return new NotFilter($field);
+    }
+
+    /**
+     * @param $dimension
+     * @param $values
+     * @return InFilter
+     */
+    public static function createInFilter($dimension, $values)
+    {
+        return new InFilter($dimension, $values);
+    }
+
+    /**
+     * @param $dimension
+     * @param $query
+     * @return SearchFilter
+     */
+    public static function createSearchFilter($dimension, $query)
+    {
+        return new SearchFilter($dimension, $query);
+    }
+
+    /**
+     * @param $dimension
+     * @param null $lower
+     * @param null $upper
+     * @param null $lowerStrict
+     * @param null $upperStrict
+     * @param null $ordering
+     * @param null $extractionFn
+     * @return BoundFilter
+     */
+    public static function createBoundFilter($dimension, $lower = null, $upper = null, $lowerStrict = null, $upperStrict = null, $ordering = null, $extractionFn = null)
+    {
+        return new BoundFilter($dimension, $lower, $upper, $lowerStrict, $upperStrict, $ordering, $extractionFn);
+    }
+
+    /**
+     * @param $dimension
+     * @param $intervals
+     * @param null $extractionFn
+     * @return IntervalFilter
+     */
+    public static function createIntervalFilter($dimension, $intervals, $extractionFn = null)
+    {
+        return new IntervalFilter($dimension, $intervals, $extractionFn);
+    }
+
+    /**
+     * @param $dimension
+     * @param $pattern
+     * @return RegexFilter
+     */
+    public static function createRegexFilter($dimension, $pattern)
+    {
+        return new RegexFilter($dimension, $pattern);
     }
 }

@@ -31,6 +31,7 @@ namespace Druid\Tests\QueryBuilder;
 
 use Druid\Query\Aggregation\TopN;
 use Druid\Query\Component\ComponentInterface;
+use Druid\Query\Component\Factory\FilterFactory;
 use Druid\Query\Component\Metric\DimensionTopNMetric;
 use Druid\Query\Component\MetricInterface;
 use Druid\QueryBuilder\TopNQueryBuilder;
@@ -65,7 +66,7 @@ class TopNQueryBuilderTest extends \PHPUnit_Framework_TestCase
         $now = new \DateTime();
         $builder->setDataSource('dataSource')
             ->setGranularity(new PeriodGranularity('P1D', 'UTC'))
-            ->setFilter($builder->filter()->selectorFilter('gender', 'male'))
+            ->setFilter(FilterFactory::createSelectorFilter('gender', 'male'))
             ->addInterval($now, new \DateTime())
             ->addAggregator($builder->aggregator()->doubleSum('sum', 'sum'))
             ->addAggregator($builder->aggregator()->count('count'))

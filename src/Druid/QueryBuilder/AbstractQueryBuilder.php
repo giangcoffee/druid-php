@@ -60,16 +60,14 @@ abstract class AbstractQueryBuilder implements QueryBuilderInterface
      */
     protected $query;
 
+    /**
+     * @var SerializerInterface
+     */
     protected static $serializer;
 
     /**
-     * @return FilterFactory
+     * @return SerializerInterface
      */
-    public function filter()
-    {
-        return new FilterFactory();
-    }
-
     public static function getSerializer()
     {
         if (!self::$serializer instanceof SerializerInterface) {

@@ -27,21 +27,50 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Druid\Query\Component;
+namespace Druid\Query\Component\Filter;
+
+use Druid\Query\Component\AbstractTypedComponent;
+use Druid\Query\Component\FilterInterface;
+use Druid\Query\Component\SearchQuerySpecInterface;
 
 /**
- * Interface FilterInterface.
+ * Class SearchFilter.
  */
-interface FilterInterface extends TypedInterface, ComponentInterface
+class SearchFilter extends AbstractTypedComponent implements FilterInterface
 {
-    const TYPE_SELECTOR = 'selector';
-    const TYPE_LOGICAL_AND = 'and';
-    const TYPE_LOGICAL_OR = 'or';
-    const TYPE_LOGICAL_NOT = 'not';
-    const TYPE_LOGICAL_IN = 'in';
-    const TYPE_BOUND = 'bound';
-    const TYPE_SEARCH = 'search';
-    const TYPE_LIKE = 'like';
-    const TYPE_REGEX = 'regex';
-    const TYPE_INTERVAL = 'interval';
+    /** @var string */
+    private $dimension;
+
+    /** @var SearchQuerySpecInterface */
+    private $query;
+
+    /**
+     * SearchFilter constructor.
+     *
+     * @param string $dimension
+     * @param $query
+     */
+    public function __construct($dimension, $query)
+    {
+        parent::__construct(FilterInterface::TYPE_BOUND);
+
+        $this->dimension = $dimension;
+        $this->query = $query;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDimension()
+    {
+        return $this->dimension;
+    }
+
+    /**
+     * @return SearchQuerySpecInterface
+     */
+    public function getQuery()
+    {
+        return $this->query;
+    }
 }

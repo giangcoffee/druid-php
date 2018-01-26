@@ -29,6 +29,7 @@
 
 namespace Druid\Tests\QueryBuilder;
 
+use Druid\Query\Component\Factory\FilterFactory;
 use Druid\QueryBuilder\TimeseriesQueryBuilder;
 use Druid\Query\Component\Granularity\PeriodGranularity;
 
@@ -41,7 +42,7 @@ class TimeseriesQueryBuilderTest extends \PHPUnit_Framework_TestCase
         $now = new \DateTime();
         $builder->setDataSource('dataSource')
             ->setGranularity(new PeriodGranularity('P1D', 'UTC'))
-            ->setFilter($builder->filter()->selectorFilter('gender', 'male'))
+            ->setFilter(FilterFactory::createSelectorFilter('gender', 'male'))
             ->addInterval($now, new \DateTime())
             ->addAggregator($builder->aggregator()->doubleSum('sum', 'sum'))
             ->addAggregator($builder->aggregator()->count('count'))

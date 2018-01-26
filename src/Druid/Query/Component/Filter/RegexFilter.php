@@ -27,21 +27,53 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Druid\Query\Component;
+namespace Druid\Query\Component\Filter;
+
+use Druid\Query\Component\AbstractTypedComponent;
+use Druid\Query\Component\FilterInterface;
 
 /**
- * Interface FilterInterface.
+ * Class RegexFilter.
  */
-interface FilterInterface extends TypedInterface, ComponentInterface
+class RegexFilter extends AbstractTypedComponent implements FilterInterface
 {
-    const TYPE_SELECTOR = 'selector';
-    const TYPE_LOGICAL_AND = 'and';
-    const TYPE_LOGICAL_OR = 'or';
-    const TYPE_LOGICAL_NOT = 'not';
-    const TYPE_LOGICAL_IN = 'in';
-    const TYPE_BOUND = 'bound';
-    const TYPE_SEARCH = 'search';
-    const TYPE_LIKE = 'like';
-    const TYPE_REGEX = 'regex';
-    const TYPE_INTERVAL = 'interval';
+    /**
+     * @var string
+     */
+    private $dimension;
+
+    /**
+     * @var string
+     */
+    private $pattern;
+
+    /**
+     * RegexFilter constructor.
+     *
+     * @param string $dimension
+     * @param $pattern
+     */
+    public function __construct($dimension, $pattern)
+    {
+        parent::__construct(FilterInterface::TYPE_REGEX);
+
+        $this->dimension = $dimension;
+        $this->pattern = $pattern;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDimension()
+    {
+        return $this->dimension;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPattern()
+    {
+        return $this->pattern;
+    }
 }

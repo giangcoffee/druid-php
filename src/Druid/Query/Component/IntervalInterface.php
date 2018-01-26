@@ -43,4 +43,9 @@ interface IntervalInterface extends ComponentInterface
      * @return string
      */
     public function getEnd();
+
+    /**
+     * @return string
+     */
+    public function getInterval();
 }

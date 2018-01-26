@@ -30,6 +30,7 @@
 namespace Druid\Tests\QueryBuilder;
 
 use Druid\Query\Component\ComponentInterface;
+use Druid\Query\Component\Factory\FilterFactory;
 use Druid\Query\Component\Granularity\PeriodGranularity;
 use Druid\Query\Component\SearchQuerySpec\InsensitiveContainsSearchQuerySpec;
 use Druid\Query\Component\SortInterface;
@@ -56,7 +57,7 @@ class SearchQueryBuilderTest extends \PHPUnit_Framework_TestCase
         $builder
             ->setDataSource('dataSource')
             ->setGranularity(new PeriodGranularity('P1D', 'UTC'))
-            ->setFilter($builder->filter()->selectorFilter('gender', 'male'))
+            ->setFilter(FilterFactory::createSelectorFilter('gender', 'male'))
             ->setLimit(500)
             ->addInterval($now, new \DateTime())
             ->setSearchDimensions(['one', 'two'])
