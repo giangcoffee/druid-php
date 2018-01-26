@@ -38,7 +38,7 @@ use Druid\Query\Component\AggregatorInterface;
 /**
  * Class AbstractAggregationQueryBuilder.
  */
-abstract class AbstractAggregationQueryBuilder extends AbstractQueryBuilder
+abstract class AbstractAggregationQueryBuilder extends AbstractQueryBuilder implements QueryBuilderInterface
 {
     /**
      * @return AggregatorFactory

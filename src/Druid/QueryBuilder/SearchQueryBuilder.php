@@ -32,6 +32,6 @@ namespace Druid\QueryBuilder;
 /**
  * Class SearchQueryBuilder
  */
-class SearchQueryBuilder extends AbstractSearchQueryBuilder
+class SearchQueryBuilder extends AbstractSearchQueryBuilder implements QueryBuilderInterface
 {
 }

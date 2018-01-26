@@ -36,7 +36,7 @@ use Druid\Query\Component\HavingInterface;
 /**
  * Class GroupByQueryBuilder.
  */
-class GroupByQueryBuilder extends AbstractAggregationQueryBuilder
+class GroupByQueryBuilder extends AbstractAggregationQueryBuilder implements QueryBuilderInterface
 {
     protected $components = [
         'dataSource' => null,
@@ -76,14 +76,14 @@ class GroupByQueryBuilder extends AbstractAggregationQueryBuilder
      */
     public function getQuery()
     {
-        $query = new GroupBy();
+        $this->query = new GroupBy();
         foreach ($this->components as $componentName => $component) {
             if (!empty($component)) {
                 $method = 'set'.ucfirst($componentName);
-                $query->$method($component);
+                $this->query->$method($component);
             }
         }
 
-        return $query;
+        return $this->query;
     }
 }

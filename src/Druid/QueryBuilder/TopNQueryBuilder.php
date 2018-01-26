@@ -38,7 +38,7 @@ use Druid\Query\Component\ThresholdInterface;
 /**
  * Class TopNQueryBuilder
  */
-class TopNQueryBuilder extends AbstractAggregationQueryBuilder
+class TopNQueryBuilder extends AbstractAggregationQueryBuilder implements QueryBuilderInterface
 {
     protected $components = [
         'dataSource' => null,
@@ -91,14 +91,14 @@ class TopNQueryBuilder extends AbstractAggregationQueryBuilder
      */
     public function getQuery()
     {
-        $query = new TopN();
+        $this->query = new TopN();
         foreach ($this->components as $componentName => $component) {
             if (!empty($component)) {
                 $method = 'set' . ucfirst($componentName);
-                $query->$method($component);
+                $this->query->$method($component);
             }
         }
 
-        return $query;
+        return $this->query;
     }
 }

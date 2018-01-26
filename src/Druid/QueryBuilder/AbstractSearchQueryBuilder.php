@@ -39,7 +39,7 @@ use Druid\Query\Search\Search;
 /**
  * Class AbstractSearchQueryBuilder.
  */
-abstract class AbstractSearchQueryBuilder extends AbstractQueryBuilder
+abstract class AbstractSearchQueryBuilder extends AbstractQueryBuilder implements QueryBuilderInterface
 {
     protected $components = [
         'dataSource' => null,
@@ -111,14 +111,14 @@ abstract class AbstractSearchQueryBuilder extends AbstractQueryBuilder
      */
     public function getQuery()
     {
-        $query = new Search();
+        $this->query = new Search();
         foreach ($this->components as $componentName => $component) {
             if (!empty($component)) {
                 $method = 'set' . ucfirst($componentName);
-                $query->$method($component);
+                $this->query->$method($component);
             }
         }
 
-        return $query;
+        return $this->query;
     }
 }

@@ -38,16 +38,29 @@ use Druid\Query\Component\Granularity\SimpleGranularity;
 use Druid\Query\Component\GranularityInterface;
 use Druid\Query\Component\Interval\Interval;
 use Druid\Query\QueryInterface;
+use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
+use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
+use JMS\Serializer\SerializerBuilder;
+use JMS\Serializer\SerializerInterface;
 
 /**
  * Class AbstractQueryBuilder.
  */
-abstract class AbstractQueryBuilder
+abstract class AbstractQueryBuilder implements QueryBuilderInterface
 {
+    const EMPTY_JSON_QUERY = "{}";
+
     /**
      * @var array
      */
     protected $components = [];
+
+    /**
+     * @var QueryInterface
+     */
+    protected $query;
+
+    protected static $serializer;
 
     /**
      * @return FilterFactory
@@ -55,6 +68,17 @@ abstract class AbstractQueryBuilder
     public function filter()
     {
         return new FilterFactory();
+    }
+
+    public static function getSerializer()
+    {
+        if (!self::$serializer instanceof SerializerInterface) {
+            self::$serializer = SerializerBuilder::create()
+                ->setPropertyNamingStrategy(new SerializedNameAnnotationStrategy(new IdenticalPropertyNamingStrategy()))
+                ->build();
+        }
+
+        return self::$serializer;
     }
 
     /**
@@ -135,8 +159,16 @@ abstract class AbstractQueryBuilder
         return $this;
     }
 
+
     /**
-     * @return QueryInterface
+     * @return mixed|string
      */
-    abstract public function getQuery();
+    public function getJSONQuery()
+    {
+        if (!$this->query instanceof QueryInterface) {
+            return self::EMPTY_JSON_QUERY;
+        }
+
+        return self::getSerializer()->serialize($this->query, 'json');
+    }
 }

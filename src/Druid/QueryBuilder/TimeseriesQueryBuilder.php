@@ -35,7 +35,7 @@ use Druid\Query\Component\Descending\Descending;
 /**
  * Class TimeseriesQueryBuilder.
  */
-class TimeseriesQueryBuilder extends AbstractAggregationQueryBuilder
+class TimeseriesQueryBuilder extends AbstractAggregationQueryBuilder implements QueryBuilderInterface
 {
     protected $components = [
         'dataSource' => null,
@@ -62,14 +62,14 @@ class TimeseriesQueryBuilder extends AbstractAggregationQueryBuilder
      */
     public function getQuery()
     {
-        $query = new Timeseries();
+        $this->query = new Timeseries();
         foreach ($this->components as $componentName => $component) {
             if (!empty($component)) {
                 $method = 'set'.ucfirst($componentName);
-                $query->$method($component);
+                $this->query->$method($component);
             }
         }
 
-        return $query;
+        return $this->query;
     }
 }
